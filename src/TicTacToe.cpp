@@ -24,6 +24,7 @@ namespace Ttt {
     int col = move % 3;
     newState -> state_[row][col] = newState -> currPlayer_;
     newState -> currPlayer_ = (newState -> currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
+    return std::move(newState);
   }
   int Ttt::checkWinner()const override {
     //rows
