@@ -2,6 +2,11 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+/**
+ * Abstract interface for search algorithm (MCTS).
+ * Object do not change only produce changed copy.
+ * 
+ */
 class Game {
 public:
     virtual ~Game() = default;
