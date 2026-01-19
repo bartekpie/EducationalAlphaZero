@@ -16,8 +16,7 @@ struct Node {
   Node(Node * parent = nullptr, std::unique_ptr<Game> gamestate, int move = -1) : 
     parent(parent),
     gamestate(gamestate),
-    move(move),
-    visitcount(0) {}
+    move(move) {}
 
 };
 
