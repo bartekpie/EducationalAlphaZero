@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Net)
 
-set(CMAKE_PREFIX_PATH /home/vboxuser/Downloads/libtorch-shared-with-deps-2.9.1+cpu/libtorch/share/cmake)
+set(CMAKE_PREFIX_PATH "C:\Users\barte\dynamic_lib\libtorch-win-shared-with-deps-latest\libtorch\share\cmake\Torch")
 
 find_package(Torch REQUIRED)
 
