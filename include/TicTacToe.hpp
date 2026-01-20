@@ -12,7 +12,7 @@ namespace TicTacToe {
   class Ttt : public Game {
     public:
       Ttt();
-      gameState&& getState()const;
+      gameState getState()const;
       void gameLoop();
       std::vector<int> getLegalMoves()const override;
       std::unique_ptr<Game> applyMove(int move)const override;
@@ -24,7 +24,7 @@ namespace TicTacToe {
       void muteState(int move);
       void visualizeBoard()const;
       void getMove()const;
-      bool processMove(int move)const;
+      bool processMove(int move);
       bool checkStateAfterMove() const;
 
   };

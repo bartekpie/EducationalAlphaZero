@@ -3,34 +3,33 @@ namespace Ttt {
   Ttt::Ttt() {
     for (auto& column : state_)
       column.fill(Player::None);
-
   }
-  gameState&& Ttt::getState() const{
+  gameState Ttt::getState() const{
     return state_;
   }
-  std::vector<int> getLegalMoves()const override {
+  std::vector<int> Ttt::getLegalMoves()const {
     std::vector<int> moves;
     for (auto i{}; i < 3; i++) {
       for (auto j{}; j < 3; j++) {
-        if (state_[i] == Player::None)
+        if (state_[i][j] == Player::None)
           moves.push_back(i*3 + j);
       }
     }
     return moves ;
   }
-  std::unique_ptr<Game> Ttt:: applyMove(int move)const override {
-    unique_ptr<Game> newState = std::make_unique<Ttt>(*this);
+  std::unique_ptr<Game> Ttt:: applyMove(int move)const  {
+    std::unique_ptr<Game> newState = std::make_unique<Ttt>(*this);
     int row = move / 3;
     int col = move % 3;
     newState -> state_[row][col] = newState -> currPlayer_;
     newState -> currPlayer_ = (newState -> currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
     return std::move(newState);
   }
-  bool Ttt::checkWinner()const override {
+  bool Ttt::checkWinner()const {
     //rows
      for (auto i{}; i < 3; ++i) {
         if (state_[i][0] == Player::None) continue;
-        if (state_[i][1] != state[i][0]) continue;
+        if (state_[i][1] != state_[i][0]) continue;
         if (state_[i][2] == state_[i][1]) 
             return true;
     
@@ -38,7 +37,7 @@ namespace Ttt {
      //columns
      for (auto i{}; i < 3; ++i) {
         if (state_[0][i] == Player::None) continue;
-        if (state_[1][i] != state[0][i]) continue;
+        if (state_[1][i] != state_[0][i]) continue;
         if (state_[2][i] == state_[1][i]) 
           return true;    
      }
@@ -48,7 +47,7 @@ namespace Ttt {
        return true; 
      return false;
    }
-   bool Ttt::isTerminal()const override {
+   bool Ttt::isTerminal()const {
       if (checkWinner() == true)
         return true;
       for (auto i{}; i < 3; i++) {
@@ -59,7 +58,6 @@ namespace Ttt {
       }
       return true;
    }
-  }
   void Ttt::visualizeBoard()const {
     std::cout<<std::endl;
     for (const auto& row : state_) {
@@ -85,7 +83,7 @@ namespace Ttt {
     std::cin >> y;
     return (y * 3 + x);
   }
-  bool Ttt::processMove (int move)const {
+  bool Ttt::processMove (int move) {
     for (const auto& v : getLegalMoves()) {
       if (v == move) {
         muteState(move);
@@ -97,10 +95,10 @@ namespace Ttt {
       
         
   }
-  bool checkStateAfterMove()const {
+  bool Ttt::checkStateAfterMove()const {
     if(isTerminal()){
       if(checkWinner()) {
-        std::cout<< "Winner ::"<< (currPlayer_ == Player::Cross) ? "Circle" : "Cross";
+        std::cout<< "Winner ::"<< ((currPlayer_ == Player::Cross) ? "Circle" : "Cross");
       } else {
         std::cout<<"Draw";
       }
