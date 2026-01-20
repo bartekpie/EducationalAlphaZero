@@ -26,13 +26,13 @@ namespace Ttt {
     newState -> currPlayer_ = (newState -> currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
     return std::move(newState);
   }
-  int Ttt::checkWinner()const override {
+  bool Ttt::checkWinner()const override {
     //rows
      for (auto i{}; i < 3; ++i) {
         if (state_[i][0] == Player::None) continue;
         if (state_[i][1] != state[i][0]) continue;
         if (state_[i][2] == state_[i][1]) 
-            return static_cast<int>(state[i][0]);
+            return true;
     
      }
      //columns
@@ -40,13 +40,13 @@ namespace Ttt {
         if (state_[0][i] == Player::None) continue;
         if (state_[1][i] != state[0][i]) continue;
         if (state_[2][i] == state_[1][i]) 
-          return static_cast<int>(state_[i][0]);
-    
+          return true;    
      }
      if (state_[0][0] != Player::None && state_[1][1] == state_[0][0] && state_[2][2] == state_[1][1])
-       return static_cast<int>(state_[0][0]);
+       return true; 
      if (state_[0][2] != Player::None && state_[1][1] == state_[0][2] && state_[2][0] == state_[1][1])
-       return static_cast<int>(state_[0][0]);
+       return true; 
+     return false;
    }
    bool Ttt::isTerminal()const override {
       if (checkWinner() == true)
@@ -60,7 +60,59 @@ namespace Ttt {
       return true;
    }
   }
-
+  void Ttt::visualizeBoard() {
+    std::cout<<std::endl;
+    for (const auto& row : state_) {
+      for (const auto& num : row) {
+        if (num == Player::Circle)
+          std::cout << "O";
+        else if (num == Player::Cross)
+          std::cout << "X"; 
+        else {
+            std::cout<< " ";
+        }
+      }
+      std::cout<<std::endl;
+    }
+    std::cout<<std::endl;
+  }
+  int Ttt::getMove() {
+    int x{};
+    int y{};
+    std::cout << "give x cordinate ::" ;
+    std::cin >> x;
+    std::cout << "give y cordinate ::" ;
+    std::cin >> y;
+    return (y*3 + x);
+  }
+  bool Ttt::processMove (int move) {
+    for (const auto& v : getLegalMoves()) {
+      if (v == move) {
+        applyMove(move);
+        return true;
+      }
+    }
+    std::cout<< "niepoprawny ruch" <<std ::endl;
+    return false;
+      
+        
+  }
+  void Ttt:: gameLoop() {
+    while (true) {
+        visualizeBoard();
+        if (processMove(getMove())) {
+          if(isTerminal()){
+            if(checkWinner) {
+                std::cout<< "Winner ::"<< (currPlayer_ == Player::Cross ? "Cross" : "Circle");
+            } else {
+                std::cout<<"Draw";
+            }
+            break;
+          }
+        }
+        
+    }
+  }
 };
 
 
