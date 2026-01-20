@@ -1,16 +1,17 @@
 #include "TicTacToe.hpp"
-namespace Ttt {
+namespace TicTacToe {
   Ttt::Ttt() {
     for (auto& column : state_)
       column.fill(Player::None);
+    currPlayer_ = Player::Cross;
   }
   gameState Ttt::getState() const{
     return state_;
   }
   std::vector<int> Ttt::getLegalMoves()const {
     std::vector<int> moves;
-    for (auto i{}; i < 3; i++) {
-      for (auto j{}; j < 3; j++) {
+    for (auto i{0}; i < 3; i++) {
+      for (auto j{0}; j < 3; j++) {
         if (state_[i][j] == Player::None)
           moves.push_back(i*3 + j);
       }
@@ -27,7 +28,7 @@ namespace Ttt {
   }
   bool Ttt::checkWinner()const {
     //rows
-     for (auto i{}; i < 3; ++i) {
+     for (auto i{0}; i < 3; ++i) {
         if (state_[i][0] == Player::None) continue;
         if (state_[i][1] != state_[i][0]) continue;
         if (state_[i][2] == state_[i][1]) 
@@ -35,7 +36,7 @@ namespace Ttt {
     
      }
      //columns
-     for (auto i{}; i < 3; ++i) {
+     for (auto i{0}; i < 3; ++i) {
         if (state_[0][i] == Player::None) continue;
         if (state_[1][i] != state_[0][i]) continue;
         if (state_[2][i] == state_[1][i]) 
@@ -50,8 +51,8 @@ namespace Ttt {
    bool Ttt::isTerminal()const {
       if (checkWinner() == true)
         return true;
-      for (auto i{}; i < 3; i++) {
-        for (auto j{}; j < 3; j++) {
+      for (auto i{0}; i < 3; i++) {
+        for (auto j{0}; j < 3; j++) {
           if (state_[i][j] == Player::None)
             return false;
         }

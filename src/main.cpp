@@ -1,15 +1,8 @@
-#include <iostream>
-#include "network.hpp"
+#include"TicTacToe.hpp"
 
 int main() {
 
-   Ttt game ;
-   game.mainLoop();
-
-    
-
-
-
-    
+   TicTacToe::Ttt game ;
+   game.gameLoop();
 
 }

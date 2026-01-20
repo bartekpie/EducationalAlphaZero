@@ -1,13 +1,13 @@
-#include "game.hpp"
+#include <iostream>
+#include <memory>
+#include <vector>
 #include <array>
-namespace TicTacToe {
-  enum class Player{
-    None, 
-    Cross,
-    Circle
-  };
+#include "game.hpp"
 
-  using gameState = std::array<std::array<Player, 3>>;
+namespace TicTacToe {
+  
+
+  using gameState = std::array<std::array<Player, 3>, 3>;
   
   class Ttt : public Game {
     public:
@@ -20,10 +20,10 @@ namespace TicTacToe {
       bool isTerminal()const override;
     private:
       gameState state_ ;
-      Player currPlayer_{ Player::Cross };
+      //Player currPlayer_{ Player::Cross };
       void muteState(int move);
       void visualizeBoard()const;
-      void getMove()const;
+      int getMove()const;
       bool processMove(int move);
       bool checkStateAfterMove() const;
 
