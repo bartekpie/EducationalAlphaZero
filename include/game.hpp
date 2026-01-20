@@ -13,6 +13,7 @@ enum class Player{
  * Object do not change only produce changed copy.
  * 
  */
+template<typename State>
 class Game {
 public:
     virtual ~Game() = default;
@@ -22,6 +23,7 @@ public:
     virtual bool isTerminal()const = 0;
 protected :
   Player currPlayer_;
+  State state_;
 
 };
 

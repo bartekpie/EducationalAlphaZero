@@ -9,7 +9,7 @@ namespace TicTacToe {
 
   using gameState = std::array<std::array<Player, 3>, 3>;
   
-  class Ttt : public Game {
+  class Ttt : public Game<gameState> {
     public:
       Ttt();
       gameState getState()const;
@@ -19,7 +19,7 @@ namespace TicTacToe {
       bool checkWinner()const override;
       bool isTerminal()const override;
     private:
-      gameState state_ ;
+      //gameState state_ ;
       //Player currPlayer_{ Player::Cross };
       void muteState(int move);
       void visualizeBoard()const;
