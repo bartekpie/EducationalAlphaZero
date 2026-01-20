@@ -83,7 +83,7 @@ namespace Ttt {
     std::cin >> x;
     std::cout << "give y cordinate ::" ;
     std::cin >> y;
-    return (y*3 + x);
+    return (y * 3 + x);
   }
   bool Ttt::processMove (int move)const {
     for (const auto& v : getLegalMoves()) {
