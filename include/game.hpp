@@ -16,9 +16,10 @@ enum class Player{
 template<typename State>
 class Game {
 public:
+    Game(State s, Player p): currPlayer_(p), state_(s){};
     virtual ~Game() = default;
     virtual std::vector<int> getLegalMoves()const = 0;
-    virtual std::unique_ptr<Game> applyMove(int move)const = 0;
+    virtual std::unique_ptr<Game<State>> applyMove(int move)const = 0;
     virtual bool checkWinner()const = 0;
     virtual bool isTerminal()const = 0;
 protected :

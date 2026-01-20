@@ -15,7 +15,7 @@ namespace TicTacToe {
       gameState getState()const;
       void gameLoop();
       std::vector<int> getLegalMoves()const override;
-      std::unique_ptr<Game> applyMove(int move)const override;
+      std::unique_ptr<Game<gameState>> applyMove(int move)const override;
       bool checkWinner()const override;
       bool isTerminal()const override;
     private:

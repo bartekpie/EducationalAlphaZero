@@ -1,5 +1,6 @@
 #include "TicTacToe.hpp"
 namespace TicTacToe {
+  using gameState = std::array<std::array<Player, 3>, 3>;
   Ttt::Ttt() {
     for (auto& column : state_)
       column.fill(Player::None);
@@ -17,14 +18,15 @@ namespace TicTacToe {
       }
     }
     return moves ;
-  }
-  std::unique_ptr<Game> Ttt:: applyMove(int move)const  {
-    std::unique_ptr<Game> newState = std::make_unique<Ttt>(*this);
+    }
+    
+  std::unique_ptr<Game<gameState>> Ttt::applyMove(int move)const  {
     int row = move / 3;
     int col = move % 3;
-    newState -> state_[row][col] = newState -> currPlayer_;
-    newState -> currPlayer_ = (newState -> currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
-    return std::move(newState);
+    gameState newstate = state_;
+    newstate[row][col] = currPlayer_;
+    Player p = ( currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
+    return std::make_unique<Game<gameState>>(newstate, p);
   }
   bool Ttt::checkWinner()const {
     //rows
