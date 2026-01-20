@@ -60,7 +60,7 @@ namespace Ttt {
       return true;
    }
   }
-  void Ttt::visualizeBoard() {
+  void Ttt::visualizeBoard()const {
     std::cout<<std::endl;
     for (const auto& row : state_) {
       for (const auto& num : row) {
@@ -76,7 +76,7 @@ namespace Ttt {
     }
     std::cout<<std::endl;
   }
-  int Ttt::getMove() {
+  int Ttt::getMove()const {
     int x{};
     int y{};
     std::cout << "give x cordinate ::" ;
@@ -85,10 +85,10 @@ namespace Ttt {
     std::cin >> y;
     return (y*3 + x);
   }
-  bool Ttt::processMove (int move) {
+  bool Ttt::processMove (int move)const {
     for (const auto& v : getLegalMoves()) {
       if (v == move) {
-        applyMove(move);
+        muteState(move);
         return true;
       }
     }
@@ -97,21 +97,32 @@ namespace Ttt {
       
         
   }
+  bool checkStateAfterMove()const {
+    if(isTerminal()){
+      if(checkWinner()) {
+        std::cout<< "Winner ::"<< (currPlayer_ == Player::Cross) ? "Circle" : "Cross";
+      } else {
+        std::cout<<"Draw";
+      }
+      return true;
+     }
+     return false;
+  }
   void Ttt:: gameLoop() {
     while (true) {
         visualizeBoard();
-        if (processMove(getMove())) {
-          if(isTerminal()){
-            if(checkWinner) {
-                std::cout<< "Winner ::"<< (currPlayer_ == Player::Cross ? "Cross" : "Circle");
-            } else {
-                std::cout<<"Draw";
-            }
+        if (processMove(getMove())){
+          if (checkStateAfterMove())
             break;
-          }
-        }
-        
+        } 
+           
     }
+  }
+  void Ttt::muteState(int move) {
+    int row = move / 3;
+    int col = move % 3;
+    state_[row][col] = currPlayer_;
+    currPlayer_ = (currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
   }
 };
 

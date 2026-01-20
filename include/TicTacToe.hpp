@@ -12,10 +12,20 @@ namespace TicTacToe {
   class Ttt : public Game {
     public:
       Ttt();
-      Ttt()
       gameState&& getState()const;
+      void gameLoop();
+      std::vector<int> getLegalMoves()const override;
+      std::unique_ptr<Game> applyMove(int move)const override;
+      bool checkWinner()const override;
+      bool isTerminal()const override;
     private:
       gameState state_ ;
       Player currPlayer_{ Player::Cross };
+      void muteState(int move);
+      void visualizeBoard()const;
+      void getMove()const;
+      bool processMove(int move)const;
+      bool checkStateAfterMove() const;
+
   };
 }
