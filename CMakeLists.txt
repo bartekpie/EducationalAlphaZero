@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 
-project(Net)
+project(main)
 
 set(CMAKE_PREFIX_PATH "C:/Users/barte/dynamic_lib/libtorch-win-shared-with-deps-latest/libtorch/share/cmake/Torch")
 
@@ -14,3 +14,11 @@ target_include_directories(main PRIVATE include)
 target_link_libraries(main ${TORCH_LIBRARIES})
 
 set_property(TARGET main PROPERTY CXX_STANDARD 20)
+if (MSVC)
+  file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
+  add_custom_command(TARGET main
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                     ${TORCH_DLLS}
+                     $<TARGET_FILE_DIR:main>)
+endif (MSVC)
