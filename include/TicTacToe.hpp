@@ -12,16 +12,17 @@ namespace TicTacToe {
   class Ttt {
     public:
       Ttt();
-      gameState getState()const;
+      Ttt(State s, Player p): state_(s), currPlayer_(p){}
+      State getState()const ;
       void gameLoop();
       std::vector<int> getLegalMoves()const ;
-      std::unique_ptr<TicTacToe> applyMove(int move)const ;
+      std::unique_ptr<Ttt> applyMove(int move)const ;
       Player checkGameStatus()const;
       bool isTerminal()const ;
       Player getCurrPlayer()const;
     private:
       State state_ ;
-      Player currPlayer_{ Player::Player1 };
+      Player currPlayer_;
       // for a visualisation and game order
       // not used in AlphaZero framework 
       void muteState(int move);

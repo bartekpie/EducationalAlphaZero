@@ -1,11 +1,12 @@
 #include "TicTacToe.hpp"
 namespace TicTacToe {
-  using gameState = std::array<std::array<Player, 3>, 3>;
+  using State = std::array<std::array<Player, 3>, 3>;
   Ttt::Ttt() {
     for (auto& column : state_)
       column.fill(Player::None);
+    currPlayer_ = Player::player1;
   }
-  gameState Ttt::getState() const{
+  State Ttt::getState()const {
     return state_;
   }
   Player Ttt::getCurrPlayer()const {
@@ -22,13 +23,13 @@ namespace TicTacToe {
     return moves ;
     }
     
-  std::unique_ptr<Game<gameState>> Ttt::applyMove(int move)const  {
+  std::unique_ptr<Ttt> Ttt::applyMove(int move)const  {
     int row = move / 3;
     int col = move % 3;
-    gameState newstate = state_;
+    State newstate = state_;
     newstate[row][col] = currPlayer_;
     Player p = ( currPlayer_ == Player::player1) ? Player::player2 : Player::player1;
-    return std::make_unique<Game<gameState>>(newstate, p);
+    return std::make_unique<Ttt>(newstate, p);
   }
   Status Ttt::checkGameStatus()const {
     //rows
@@ -36,7 +37,7 @@ namespace TicTacToe {
         if (state_[i][0] == Player::None) continue;
         if (state_[i][1] != state_[i][0]) continue;
         if (state_[i][2] == state_[i][1]) 
-            return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win );
+            return ((currPlayer_ == Player::player1) ? Status::player1Win : Status::player2Win );
      }
      //columns
      for (auto i{0}; i < 3; ++i) {
@@ -49,6 +50,7 @@ namespace TicTacToe {
        return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win ); 
      if (state_[0][2] != Player::None && state_[1][1] == state_[0][2] && state_[2][0] == state_[1][1])
        return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win ); 
+     // check for 
      for (auto i{0}; i < 3; i++) {
         for (auto j{0}; j < 3; j++) {
           if (state_[i][j] == Player::None)
