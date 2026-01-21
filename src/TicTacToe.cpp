@@ -57,10 +57,10 @@ namespace TicTacToe {
             return Status::notTerminal;
         }
       }
-      return Status::Draw;
+      return Status::draw;
    }
    bool Ttt::isTerminal()const {
-      if (checkWinner() == Status::notTerminal)
+      if (checkGameStatus() == Status::notTerminal)
         return false;
       return true;
    }
@@ -102,15 +102,19 @@ namespace TicTacToe {
         
   }
   bool Ttt::checkStateAfterMove()const {
-    if(isTerminal()){
-      if(checkWinner()) {
-        std::cout<< "Winner ::"<< ((currPlayer_ == Player::player1) ? "Circle" : "Cross");
-      } else {
-        std::cout<<"Draw";
-      }
-      return true;
-     }
-     return false;
+    switch(checkGameStatus()){
+      case Status::player1Win :
+        std::cout<< "Cross wins";
+        return true;
+      case Status::player2Win : 
+        std::cout<< "Circle wins";
+        return true;
+      case Status::draw : 
+        std::cout<< "Draw";
+        return true;
+      default : 
+        return false;
+    }
   }
   void Ttt:: gameLoop() {
     while (true) {

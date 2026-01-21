@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <concept>
+#include <concepts>
 
 /**
  * Abstract interface for search algorithm (MCTS).
@@ -14,13 +14,13 @@ enum class Player {
     player1, 
     player2,
     None
-}
+};
 enum class Status {
     draw, 
     player1Win,
     player2Win,
     notTerminal
-}
+};
 /**
  * Abstract interface for search algorithm (MCTS).
  * Object do not change only produce changed copy.
@@ -34,6 +34,6 @@ requires(const G g, int move) {
     { g.isTerminal() } -> std::same_as<bool>;
     { g.checkGameStatus() } -> std::same_as<Status>;
     { g.getCurrPlayer() } -> std::same_as<Player>;
-}
+};
 
 #endif

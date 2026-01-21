@@ -1,10 +1,11 @@
+#include "game.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <array>
-#include "game.hpp"
 
-namespace TicTacToe {
+
+namespace TicTacToe{
   
 
   using State = std::array<std::array<Player, 3>, 3>;
@@ -17,7 +18,7 @@ namespace TicTacToe {
       void gameLoop();
       std::vector<int> getLegalMoves()const ;
       std::unique_ptr<Ttt> applyMove(int move)const ;
-      Player checkGameStatus()const;
+      Status checkGameStatus()const;
       bool isTerminal()const ;
       Player getCurrPlayer()const;
     private:
@@ -31,4 +32,4 @@ namespace TicTacToe {
       bool processMove(int move);
       bool checkStateAfterMove() const;
   };
-}
+};
