@@ -4,10 +4,12 @@ namespace TicTacToe {
   Ttt::Ttt() {
     for (auto& column : state_)
       column.fill(Player::None);
-    currPlayer_ = Player::Cross;
   }
   gameState Ttt::getState() const{
     return state_;
+  }
+  Player Ttt::getCurrPlayer()const {
+    return currPlayer_;
   }
   std::vector<int> Ttt::getLegalMoves()const {
     std::vector<int> moves;
@@ -25,49 +27,48 @@ namespace TicTacToe {
     int col = move % 3;
     gameState newstate = state_;
     newstate[row][col] = currPlayer_;
-    Player p = ( currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
+    Player p = ( currPlayer_ == Player::player1) ? Player::player2 : Player::player1;
     return std::make_unique<Game<gameState>>(newstate, p);
   }
-  bool Ttt::checkWinner()const {
+  Status Ttt::checkGameStatus()const {
     //rows
      for (auto i{0}; i < 3; ++i) {
         if (state_[i][0] == Player::None) continue;
         if (state_[i][1] != state_[i][0]) continue;
         if (state_[i][2] == state_[i][1]) 
-            return true;
-    
+            return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win );
      }
      //columns
      for (auto i{0}; i < 3; ++i) {
         if (state_[0][i] == Player::None) continue;
         if (state_[1][i] != state_[0][i]) continue;
         if (state_[2][i] == state_[1][i]) 
-          return true;    
+          return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win );    
      }
      if (state_[0][0] != Player::None && state_[1][1] == state_[0][0] && state_[2][2] == state_[1][1])
-       return true; 
+       return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win ); 
      if (state_[0][2] != Player::None && state_[1][1] == state_[0][2] && state_[2][0] == state_[1][1])
-       return true; 
-     return false;
-   }
-   bool Ttt::isTerminal()const {
-      if (checkWinner() == true)
-        return true;
-      for (auto i{0}; i < 3; i++) {
+       return ((currPlayer_==Player::player1) ? Status::player1Win : Status::player2Win ); 
+     for (auto i{0}; i < 3; i++) {
         for (auto j{0}; j < 3; j++) {
           if (state_[i][j] == Player::None)
-            return false;
+            return Status::notTerminal;
         }
       }
+      return Status::Draw;
+   }
+   bool Ttt::isTerminal()const {
+      if (checkWinner() == Status::notTerminal)
+        return false;
       return true;
    }
   void Ttt::visualizeBoard()const {
     std::cout<<std::endl;
     for (const auto& row : state_) {
       for (const auto& num : row) {
-        if (num == Player::Circle)
+        if (num == Player::player2)
           std::cout << "O";
-        else if (num == Player::Cross)
+        else if (num == Player::player1)
           std::cout << "X"; 
         else {
             std::cout<< " ";
@@ -101,7 +102,7 @@ namespace TicTacToe {
   bool Ttt::checkStateAfterMove()const {
     if(isTerminal()){
       if(checkWinner()) {
-        std::cout<< "Winner ::"<< ((currPlayer_ == Player::Cross) ? "Circle" : "Cross");
+        std::cout<< "Winner ::"<< ((currPlayer_ == Player::player1) ? "Circle" : "Cross");
       } else {
         std::cout<<"Draw";
       }
@@ -123,7 +124,7 @@ namespace TicTacToe {
     int row = move / 3;
     int col = move % 3;
     state_[row][col] = currPlayer_;
-    currPlayer_ = (currPlayer_ == Player::Cross) ? Player::Circle : Player::Cross;
+    currPlayer_ = (currPlayer_ == Player::player1) ? Player::player2 : Player::player1;
   }
 };
 
