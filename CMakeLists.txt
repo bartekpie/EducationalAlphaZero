@@ -13,4 +13,4 @@ target_include_directories(main PRIVATE include)
 
 target_link_libraries(main ${TORCH_LIBRARIES})
 
-set_property(TARGET main PROPERTY CXX_STANDARD 17)
+set_property(TARGET main PROPERTY CXX_STANDARD 20)

@@ -3,29 +3,37 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-enum class Player{
-    None, 
-    Cross,
-    Circle
-};
+#include <concept>
+
 /**
  * Abstract interface for search algorithm (MCTS).
  * Object do not change only produce changed copy.
  * 
  */
-template<typename State>
-class Game {
-public:
-    Game(State s, Player p): currPlayer_(p), state_(s){};
-    virtual ~Game() = default;
-    virtual std::vector<int> getLegalMoves()const = 0;
-    virtual std::unique_ptr<Game<State>> applyMove(int move)const = 0;
-    virtual bool checkWinner()const = 0;
-    virtual bool isTerminal()const = 0;
-protected :
-  Player currPlayer_;
-  State state_;
-
-};
+enum class Player {
+    player1, 
+    player2,
+    None
+}
+enum class Status {
+    draw, 
+    player1Win,
+    player2Win,
+    notTerminal
+}
+/**
+ * Abstract interface for search algorithm (MCTS).
+ * Object do not change only produce changed copy.
+ * 
+ */
+template<typename G>
+concept Game = 
+requires(const G g, int move) {
+    { g.getLegalMoves() } -> std::same_as<std::vector<int>>;
+    { g.applyMove(move) } -> std::same_as<G>;
+    { g.isTerminal() } -> std::same_as<bool>;
+    { g.checkGameStatus() } -> std::same_as<Status>;
+    { g.getCurrPlayer() } -> std::same_as<Player>;
+}
 
 #endif
