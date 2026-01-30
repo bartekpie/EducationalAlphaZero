@@ -7,15 +7,18 @@
 template<Game G>
 class Node {
   public:
+   template<typename T>
    friend class Mcts;
     Node(G game, Node* parent=nullptr, int actionTaken = -1) : 
       state_(game),
       actionTaken_(actionTaken),
       parent_(parent) {}
   private:
-    std::vector<std::unique_ptr<Node>> children_;
+    std::vector<std::unique_ptr<Node<G>>> children_;
+    Node* parent_;
     G state_;
-    int actionTaken_;
+    int vistCount_;
+    int value_;
 
 }
 //purpose of this class is to simulate monte-carlo tree search
@@ -23,18 +26,18 @@ class Node {
 template<Game G>
 class Mcts {
   public: 
+    friend class AlphaZero;
     Mcts();
-    Mcts(Node<G>* root, NeuralNetwork* net );
+    Mcts(Node<G>* root, NeuralNetwork net) : net_(net) {};
     run();
-    exportData();
+
     
   private:
     Node<G>* root_;
-    NeuralNetwork* net_;
-    uct();
-    select();
-    expand();
-    getPolicy();
+    NeuralNetwork& net_;
+    double uct(double policy);
+    Node* select(Node* node);
+    Node* expand(Node* node);
     backpropagate();
     iterationMcts();
     

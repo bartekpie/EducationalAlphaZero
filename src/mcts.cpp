@@ -29,17 +29,27 @@ Node* Mcts::expand(Node* node) {
     if (node->children.size() < moves.size()) {
         auto move = moves[node->children.size()];
         auto game = node->state_.applyMove(move);
-        node.children.push_back(std::make_unique<Node<G>>(game, node, move);
+        node.children.push_back(std::make_unique<Node<G>>(game, node, move));
         return node->children.back().get();
      )
     } else {
-        /// think how to handle that ; // add node counter to see how much procent of poossibiliteis the game is expanded 
+        
     }
 }
+void Mcts::backpropagade(Node* node, Status status) {
+    while (node->parent != nullptr) {
+       node ->visit 
+    }
+}
+void Mcts::backpropagade(Node* node, int value) {
+    
+}        
 void Mcts::mctsiteration(Node* root) {
     Node* node = select(root);
-    if (!isTerminal(node->gamestate))
-      node = expand(node);
-    int winner = simulate(node->gamestate);
-    backpropagate(node, winner);
+    if (!isTerminal(node->gamestate)) {
+      backpropagate(node, node->state_.getStatus());
+    } else{
+       node = expand(node);
+       backpropagate(node, net_.forward(node->state_).result());
+    }
 }
