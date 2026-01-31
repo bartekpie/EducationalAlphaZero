@@ -13,7 +13,7 @@ template<Game G>
 class Node {
   public:
     template<Game> friend class Mcts;
-    Node(G game, Node* parent=nullptr, int actionTaken = -1) : 
+    Node(G game = G(), Node* parent=nullptr, int actionTaken = -1) : 
       state_(game),
       parent_(parent),
       value_(0.0),
@@ -26,8 +26,6 @@ class Node {
     int visitCount_;
     double value_;
     double prior_;
-
-
 };
 
 //purpose of this class is to simulate monte-carlo tree search
@@ -36,7 +34,7 @@ class Node {
 template<Game G>
 class Mcts {
   public: 
-    Mcts(NeuralNetwork& net) : 
+    Mcts(NeuralNetwork& net, ) : 
       net_(net),
       root_(std::make_unique<Node<G>>()),
       procentOfKnowledge_(0.0) {}

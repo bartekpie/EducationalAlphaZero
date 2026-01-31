@@ -1,5 +1,4 @@
-#ifndef GAME
-#define GAME
+#pragma once
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -36,4 +35,3 @@ requires(const G g, int move) {
     { g.getCurrPlayer() } -> std::same_as<Player>;
 };
 
-#endif

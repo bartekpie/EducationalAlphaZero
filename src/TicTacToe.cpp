@@ -23,13 +23,13 @@ namespace TicTacToe {
     return moves ;
     }
     
-  std::unique_ptr<Ttt> Ttt::applyMove(int move)const  {
+  Ttt Ttt::applyMove(int move)const  {
     int row = move / 3;
     int col = move % 3;
     State newstate = state_;
     newstate[row][col] = currPlayer_;
     Player p = ( currPlayer_ == Player::player1) ? Player::player2 : Player::player1;
-    return std::make_unique<Ttt>(newstate, p);
+    return Ttt a(newstate, p);
   }
   Status Ttt::checkGameStatus()const {
     //rows

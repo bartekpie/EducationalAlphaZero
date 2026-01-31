@@ -63,7 +63,7 @@ void Mcts<G>::iteration() {
     node = select(node);
     if (isTerminal(node->state_)) {
       backpropagade(node, node->state_.getGameStatus());
-      termBackProp++;
+      termBackProp_++;
     } else {
        node = expand(node);
        auto [policy, value] = net_.forward(node->state_);
@@ -75,7 +75,7 @@ template<Game G>
 void Mcts<G>::run(int num) {
   for (auto i{0}; i < num; i++){
     iteration();
-    currBackProp++;
-    procentOfKnowledge_ = (termBackProp / currBackProp);
+    currBackProp_++;
+    procentOfKnowledge_ = ( termBackProp_ / currBackProp_ );
   }
 }
