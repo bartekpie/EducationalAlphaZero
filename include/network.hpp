@@ -20,4 +20,6 @@ public:
     //template<typename T>
     void train(std::vector<std::vector<double>> inputs, std::vector<std::vector<double>> outputs);
     static std::pair<double, double> TensorToPair(torch::Tensor t);
+    static torch::Tensor vecToTensor(const std::vector<int>& i);
+      
 };

@@ -58,7 +58,7 @@ template<Game G>
 double Mcts<G>::puct(Node<G>* child) {
     if (child->visitCount_ == 0)
         return std::numeric_limits<double>::infinity();
-    return (child->value_ / child->visitCount_) + child->prior_ * std::sqrt(std::log(child->parent_->visitcount_) / child->visitcount_);
+    return (child->value_ / child->visitCount_) + child->prior_ * std::sqrt(std::log(child->parent_->visitCount_) / child->visitCount_);
 }
 template<Game G>
 Node<G>* Mcts<G>::select(Node<G>* node) {
@@ -69,10 +69,10 @@ Node<G>* Mcts<G>::select(Node<G>* node) {
         double best{ -1e9 };
         Node<G>* bestNode = nullptr;
         for (const auto& child : node->children_) {
-            auto curr = puct(child);
+            auto curr = puct(child.get());
             if (curr > best) {
                 best = curr;
-                bestNode = child;
+                bestNode = child.get();
             }
         }
         node = bestNode;
@@ -119,7 +119,11 @@ void Mcts<G>::iteration() {
     }
     else {
         node = expand(node);
-        auto [policy, value] = TensorToPair(net_.forward(vector<int>(node->state_.begin(), node->state_.end()));
+        std::vector<int> fullState(node->state_.getState().begin(), node->state_.getState().end());
+        fullState.push_back(static_cast<int>(node->state_.getCurrPlayer()));
+        auto res = NeuralNetwork::TensorToPair(net_.forward(NeuralNetwork::vecToTensor(fullState)));
+        double policy = res.first;
+        double value = res.second;
         node->prior_ = policy;
         backpropagade(node, value);
     }

@@ -41,3 +41,8 @@ std::pair<double, double> NeuralNetwork::TensorToPair(torch::Tensor t) {
         cpu_output[1].item<double>()
     );
 }
+
+torch::Tensor NeuralNetwork::vecToTensor(const std::vector<int>& i)
+{
+    return torch::tensor(i).clone();
+}
