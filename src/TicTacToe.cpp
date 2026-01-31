@@ -21,15 +21,17 @@ namespace TicTacToe {
       }
     }
     return moves ;
-    }
+  }
     
-  Ttt Ttt::applyMove(int move)const  {
+  TicTacToe::Ttt Ttt::applyMove(int move)const {
     int row = move / 3;
     int col = move % 3;
     State newstate = state_;
     newstate[row][col] = currPlayer_;
-    Player p = ( currPlayer_ == Player::player1) ? Player::player2 : Player::player1;
-    return Ttt a(newstate, p);
+    Player p = ( currPlayer_ == Player::player1)
+       ? Player::player2 
+       : Player::player1;
+    return Ttt(newstate, p);
   }
   Status Ttt::checkGameStatus()const {
     //rows

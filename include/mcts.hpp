@@ -18,7 +18,7 @@ class Node {
       parent_(parent),
       value_(0.0),
       prior_(0.0),
-      visitCount_(0) {}
+      visitCount_(0) {};
   private:
     std::vector<std::unique_ptr<Node<G>>> children_;
     Node* parent_;
@@ -32,12 +32,12 @@ class Node {
 //chenged to be compatible with alpha zero uct -> puct , no rnadom simualtion using nn instead
 
 template<Game G>
-class Mcts {
+class Mcts{
   public: 
-    Mcts(NeuralNetwork& net, ) : 
+    Mcts(NeuralNetwork& net) : 
       net_(net),
       root_(std::make_unique<Node<G>>()),
-      procentOfKnowledge_(0.0) {}
+      procentOfKnowledge_(0.0) {};
 
     void run(int num); 
 
