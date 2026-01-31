@@ -2,22 +2,22 @@
 #include <cassert>
 
 template<Game G>
-double Mcts::uct(Node<G>* child) {
-    if (child -> visitcount == 0) 
+double Mcts::puct(Node<G>* child) {
+    if (child -> visitCount_ == 0) 
       return std::numeric_limits<double>::infinity();
     return ( child->value_ / child->visitCount_ ) + child->prior_ * std::sqrt(std::log(child->parent_->visitcount_) / child->visitcount_);
 }
 template<Game G>
 Node<G>* Mcts::select(Node<G>* node) {
     while (node->state_.isTerminal() == false) {
-        if (node->children.size() < node->state_.getLegalMoves().size()) {
+        if (node->children_.size() < node->state_.getLegalMoves().size()) {
             return node;
         }
         double best{-1e9};
         Node<G>* bestNode = nullptr;
-        for (const auto& child : node->children) {
-          auto curr = uct(child);
-          if (curr>best) {
+        for (const auto& child : node->children_) {
+          auto curr = puct(child);
+          if (curr > best) {
             best = curr;
             bestNode = child;
           }
@@ -29,17 +29,17 @@ Node<G>* Mcts::select(Node<G>* node) {
 template<Game G>
 Node<G>* Mcts::expand(Node<G>* node) {
     const auto& moves = node->state_.getLegalMoves();
-    std::assert(node->children.size() < moves.size());
-    auto move = moves[node->children.size()];
+    std::assert(node->children_.size() < moves.size());
+    auto move = moves[node->children_.size()];
     auto game = node->state_.applyMove(move);
-    node->children.push_back(std::make_unique<Node<G>>(game, node, move));
-    return node->children.back().get();
+    node->children_.push_back(std::make_unique<Node<G>>(game, node, move));
+    return node->children_.back().get();
     
     
 }
 template<Game G>
 void Mcts::backpropagade(Node<G>* node, Status status) {
-    while (node->parent != nullptr) {
+    while (node != nullptr) {
        node->visitCount_++;
        if(status == Status::player1Win)
         node->value_ += (node->state_.getCurrentPlayer() == Player::player1) ? 1 : -1;
@@ -50,7 +50,7 @@ void Mcts::backpropagade(Node<G>* node, Status status) {
 } 
 template<Game G>
 void Mcts::backpropagade(Node<G>* node, double value) {
-    while (node->parent != nullptr) {
+    while (node != nullptr) {
        node->visitCount_++;
        node->value_ += value;
        value = -value;
@@ -59,16 +59,16 @@ void Mcts::backpropagade(Node<G>* node, double value) {
 }  
 template<Game G>      
 void Mcts::iteration() {
-    Node<G>* node = root_;
+    Node<G>* node = root_.get();
     node = select(node);
     if (isTerminal(node->state_)) {
-      backpropagate(node, node->state_.getGameStatus());
+      backpropagade(node, node->state_.getGameStatus());
       termBackProp++;
     } else {
        node = expand(node);
        auto [policy, value] = net_.forward(node->state_);
-       node->prior = policy;
-       backpropagate(node, value);
+       node->prior_ = policy;
+       backpropagade(node, value);
     }
 }
 template<Game G>
