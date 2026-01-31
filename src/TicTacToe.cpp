@@ -23,7 +23,10 @@ namespace TicTacToe {
     return moves ;
   }
     
-  TicTacToe::Ttt Ttt::applyMove(int move)const {
+  Ttt Ttt::applyMove(int move)const {
+    if (move < 0 || move >= 9) {
+        throw std::out_of_range("Move must be between 0 and 8");
+    }
     int row = move / 3;
     int col = move % 3;
     State newstate = state_;
