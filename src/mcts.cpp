@@ -31,7 +31,7 @@ Node<G>* Mcts<G>::expand(Node<G>* node) {
     const auto& moves = node->state_.getLegalMoves();
     std::assert(node->children_.size() < moves.size());
     auto move = moves[node->children_.size()];
-    auto game = node->state_.applyMove(move);
+    G game = node->state_.applyMove(move);
     node->children_.push_back(std::make_unique<Node<G>>(game, node, move));
     return node->children_.back().get();
     
