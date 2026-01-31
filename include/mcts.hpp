@@ -4,13 +4,15 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <limits>
+#include <cmath>
 
 // helper template class to structure the node of personalizetd MCTS 
 
 template<Game G>
 class Node {
   public:
-    template<typename T> friend class Mcts;
+    template<Game> friend class Mcts;
     Node(G game, Node* parent=nullptr, int actionTaken = -1) : 
       state_(game),
       parent_(parent),
@@ -34,22 +36,22 @@ class Node {
 template<Game G>
 class Mcts {
   public: 
-    Mcts(Node<G>* root = nullptr, NeuralNetwork& net) : 
+    Mcts(NeuralNetwork& net) : 
       net_(net),
-      root_(root),
-      procentOfKnowledge_(0.0) {};
+      root_(std::make_unique<Node<G>>()),
+      procentOfKnowledge_(0.0) {}
 
     void run(int num); 
 
   private:
     int currBackProp_{0};
     int termBackProp_{0};
-    double procentOfKnowledge_;
-    Node<G>* root_;
+    float procentOfKnowledge_;
+    std::unique_ptr<Node<G>> root_;
     NeuralNetwork& net_;
-    double uct();
-    Node* select(Node<G>* node);
-    Node* expand(Node<G>* node);
+    double puct(Node<G>* child);
+    Node<G>* select(Node<G>* node);
+    Node<G>* expand(Node<G>* node);
     void backpropagade(Node<G>* node, Status status);
     void backpropagade(Node<G>* node, double value);
     void iteration();
