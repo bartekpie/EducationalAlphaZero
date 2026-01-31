@@ -42,9 +42,9 @@ void Mcts<G>::backpropagade(Node<G>* node, Status status) {
     while (node != nullptr) {
        node->visitCount_++;
        if(status == Status::player1Win)
-        node->value_ += (node->state_.getCurrentPlayer() == Player::player1) ? 1 : -1;
+        node->value_ += (node->state_.getCurrPlayer() == Player::player1) ? 1 : -1;
        if(status == Status::player2Win)
-        node->value_ += (node->state_.getCurrentPlayer() == Player::player2) ? 1 : -1;
+        node->value_ += (node->state_.getCurrPlayer() == Player::player2) ? 1 : -1;
        node = node->parent_;
     }
 } 
@@ -62,7 +62,7 @@ void Mcts<G>::iteration() {
     Node<G>* node = root_.get();
     node = select(node);
     if (isTerminal(node->state_)) {
-      backpropagade(node, node->state_.getGameStatus());
+      backpropagade(node, node->state_.checkGameStatus());
       termBackProp_++;
     } else {
        node = expand(node);

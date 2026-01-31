@@ -28,10 +28,10 @@ enum class Status {
 template<typename G>
 concept Game = 
 requires(const G g, int move) {
-    { g.getLegalMoves() } -> std::same_as<std::vector<int>>;
-    { g.applyMove(move) } -> std::same_as<G>;
-    { g.isTerminal() } -> std::same_as<bool>;
-    { g.checkGameStatus() } -> std::same_as<Status>;
-    { g.getCurrPlayer() } -> std::same_as<Player>;
+    { g.getLegalMoves() } -> std::convertible_to<std::vector<int>>;
+    { g.applyMove(move) } -> std::convertible_to<G>;
+    { g.isTerminal() } -> std::convertible_to<bool>;
+    { g.checkGameStatus() } -> std::convertible_to<Status>;
+    { g.getCurrPlayer() } -> std::convertible_to<Player>;
 };
 
