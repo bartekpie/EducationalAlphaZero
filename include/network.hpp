@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
+
 class NeuralNetwork : public torch::nn::Module {
 private:
     torch::nn::Linear layer1_{nullptr};
@@ -18,4 +19,5 @@ public:
     torch::Tensor forward(torch::Tensor x);
     //template<typename T>
     void train(std::vector<std::vector<double>> inputs, std::vector<std::vector<double>> outputs);
+    static std::pair<double, double> TensorToPair(torch::Tensor t);
 };

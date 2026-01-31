@@ -17,7 +17,7 @@ namespace TicTacToe{
       State getState()const ;
       void gameLoop();
       std::vector<int> getLegalMoves()const ;
-      std::unique_ptr<Ttt> applyMove(int move)const ;
+      Ttt applyMove(int move)const ;
       Status checkGameStatus()const;
       bool isTerminal()const ;
       Player getCurrPlayer()const;

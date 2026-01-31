@@ -1,5 +1,6 @@
 #include"TicTacToe.hpp"
 #include "mcts.hpp"
+#include "network.hpp"
 #include <iostream>
 
 int main() {

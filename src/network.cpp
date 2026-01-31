@@ -33,3 +33,11 @@ void NeuralNetwork::train(std::vector<std::vector<double>> inputs, std::vector<s
             }
         }
     }
+std::pair<double, double> NeuralNetwork::TensorToPair(torch::Tensor t) {
+    auto cpu_output = t.to(torch::kCPU);
+
+    return std::make_pair(
+        cpu_output[0].item<double>(),
+        cpu_output[1].item<double>()
+    );
+}
