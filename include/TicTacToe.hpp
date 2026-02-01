@@ -14,7 +14,7 @@ namespace TicTacToe{
     public:
       Ttt();
       Ttt(State s, Player p): state_(s), currPlayer_(p){}
-      State getState()const ;
+      State getState() const ;
       void gameLoop();
       std::vector<int> getLegalMoves()const ;
       Ttt applyMove(int move)const ;

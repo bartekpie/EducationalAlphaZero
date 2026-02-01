@@ -119,7 +119,12 @@ void Mcts<G>::iteration() {
     }
     else {
         node = expand(node);
-        std::vector<int> fullState(node->state_.getState().begin(), node->state_.getState().end());
+        std::vector<int> fullState;
+        for (auto& row : node->state_.getState()) {
+            for (auto& p : row) {
+                fullState.push_back(static_cast<int>(p));
+            }
+        }
         fullState.push_back(static_cast<int>(node->state_.getCurrPlayer()));
         auto res = NeuralNetwork::TensorToPair(net_.forward(NeuralNetwork::vecToTensor(fullState)));
         double policy = res.first;
